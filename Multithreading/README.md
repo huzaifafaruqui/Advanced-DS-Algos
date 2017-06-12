@@ -1,4 +1,9 @@
+## Program to find sum of first N numbers
+
+
+
 # Benchmarks
+
 
 #### Multithreaded
 ```
@@ -14,7 +19,7 @@ user	0m0.136s
 sys	0m0.000s
 ```
 
-#### Multithreaded
+#### Single threaded
 ```
 $ g++ -std=c++11 wothread.cpp 
 $ time ./a.out 
