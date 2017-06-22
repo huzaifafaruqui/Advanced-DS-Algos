@@ -8,9 +8,10 @@ class BinarySearchTree{
 
     struct Node{
         T data;
-        Node *left;
-        Node *right;
-        Node(const T& val): data(val), left(nullptr), right(nullptr) {}
+        shared_ptr<Node> left;
+        shared_ptr<Node> right;
+        Node() : data(), left(), right() {}
+        Node(T val) : data(val), left(), right() {}
     };
 
     Node *root;
