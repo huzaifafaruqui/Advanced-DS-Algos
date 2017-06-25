@@ -1,4 +1,4 @@
-#include <iostream>
+
 template <typename T>
 struct AVLTree<T>::AVLNode {
   T data;
