@@ -1,31 +1,30 @@
-
+#include <iostream>
 template <typename T>
 struct AVLTree<T>::AVLNode {
-    T data;
-    std::shared_ptr<AVLNode> left;
-    std::shared_ptr<AVLNode> right;
-    unsigned int height;
-    AVLNode() : data(), left(), right(), height() {}
-    AVLNode(T val) : data(val), left(), right(), height() {}
-  };
-
-
+  T data;
+  std::shared_ptr<AVLNode> left;
+  std::shared_ptr<AVLNode> right;
+  unsigned int height;
+  AVLNode() : data(), left(), right(), height() {}
+  AVLNode(T val) : data(val), left(), right(), height() {}
+};
 
 template <typename T>
-AVLTRree<T>::AVLTree() : root(), count() {}
+AVLTree<T>::AVLTree()
+    : root(), count() {}
 
 template <typename T>
-AVLTRree<T>::~AVLTree() = default;
+AVLTree<T>::~AVLTree() = default;
 
 template <typename T>
-bool AVLTree<T>::insert(T val) {
+bool AVLTree<T>::insert(const T& val) {
   if (insert(val, root)) return true;
   return false;
 }
 
 template <typename T>
 std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::insert(
-    T val, std::shared_ptr<AVLNode>& p) {
+    const T& val, std::shared_ptr<AVLNode>& p) {
   // https://stackoverflow.com/questions/30287402/c-nested-class-in-class-template-declaration
   if (p == nullptr) {
     p = std::make_shared<AVLNode>(val);
@@ -43,14 +42,14 @@ std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::insert(
 }
 
 template <typename T>
-bool AVLTree<T>::search(T val) {
+bool AVLTree<T>::search(const T& val) {
   if (search(val, root)) return true;
   return false;
 }
 
 template <typename T>
 std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::search(
-    T val, std::shared_ptr<AVLNode>& p) {
+    const T& val, std::shared_ptr<AVLNode>& p) {
   if (p == nullptr || p->data == val) {
     return p;
   }
@@ -65,8 +64,8 @@ std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::search(
 template <typename T>
 std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::extract_min(
     std::shared_ptr<AVLNode>& p) {
-  if (p->left)  // make sure p!=nullptr
-  {
+  if (p->left){
+    // make sure p!=nullptr
     return extract_min(p->left);
   }
 
@@ -74,39 +73,43 @@ std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::extract_min(
 }
 
 template <typename T>
-bool AVLTree<T>::remove(T val) {
-  auto temp = search(val, root);
-  if (temp) {
-    remove(temp);
+bool AVLTree<T>::remove(const T& val) {
+  // auto temp = search(val, root);
+  return remove(root, val);
+}
+
+template <typename T>
+bool AVLTree<T>::remove(std::shared_ptr<AVLNode>& p, const T& val) {
+  if (p && p->data > val) {
+    return remove(p->left, val);
+  }
+
+  else if (p && p->data < val) {
+    return remove(p->right, val);
+  }
+
+  else if (p && p->data == val) {
+    if (!p->left)
+      p = p->right;
+    else if (!p->right)
+      p = p->left;
+    else {
+      auto temp = p->right;
+      while (temp->left) temp = temp->left;
+      p->data = temp->data;
+      remove(p->right, p->data);
+    }
     return true;
   }
   return false;
 }
 
 template <typename T>
-void AVLTree<T>::remove(std::shared_ptr<AVLNode>& p) {
-  if (p->left == nullptr) {
-    p = std::move(p->right);
-    // https://stackoverflow.com/questions/41871115/why-would-i-stdmove-an-stdshared-ptr
-  }
-
-  else if (p->right == nullptr) {
-    p = std::move(p->left);
-  }
-
-  else {
-    auto temp = extract_min(p->right);
-    p->data = temp->data;
-    remove(temp);
-  }
-}
-
-template <typename T>
-void printInorder(std::ostream& out,
-                  std::shared_ptr<typename AVLTree<T>::AVLNode>& p) {
+void AVLTree<T>::printInorder(
+    std::ostream& out, std::shared_ptr<typename AVLTree<T>::AVLNode> p) const {
   if (p) {
     printInorder(out, p->left);
-    out << p->data;
+    out << p->data << " ";
     printInorder(out, p->right);
   }
 }
