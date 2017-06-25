@@ -7,16 +7,13 @@
 template <typename T>
 class AVLTree {
  private:
-  struct AVLNode {
-    T data;
-    std::shared_ptr<AVLNode> left;
-    std::shared_ptr<AVLNode> right;
-    unsigned int height;
-    AVLNode() : data(), left(), right(), height() {}
-    AVLNode(T val) : data(val), left(), right(), height() {}
-  };
-  size_t count = 0;
+
+  struct AVLNode;
+
+  size_t count;
+
   std::shared_ptr<AVLNode> root;
+
   unsigned int getHeight(std::shared_ptr<AVLNode>& p) {
     if (p) return p->height;
     return 0;
@@ -39,17 +36,17 @@ class AVLTree {
   void printInorder(std::ostream&, std::shared_ptr<AVLNode>&);
 
  public:
-  AVLTree() : root() {}
-  ~AVLTree() {
-    while (root) remove(root->data);
-  }
+  AVLTree();
+  ~AVLTree();
+
   AVLTree(AVLTree&&) = default;
   AVLTree& operator=(AVLTree&&) = default;
-  AVLTree(const AVLTree&);
-  AVLTree& operator=(const AVLTree&);
+  AVLTree(const AVLTree&) = delete;  //disable copy constructor
+  AVLTree& operator=(const AVLTree&) = delete;  //disable copy assignment
+
   bool insert(T);
   bool remove(T);
-  unsigned int height() { return getHeight(root); }
+  unsigned int getHeight() { return getHeight(root); }
   bool search(T);
   size_t size() { return count; }
   // void restoreAVL(AVLTreeNode *ancestor, AVLTreeNode *newNode);

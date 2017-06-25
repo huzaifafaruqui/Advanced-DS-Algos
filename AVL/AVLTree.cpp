@@ -1,5 +1,23 @@
 
 template <typename T>
+struct AVLTree<T>::AVLNode {
+    T data;
+    std::shared_ptr<AVLNode> left;
+    std::shared_ptr<AVLNode> right;
+    unsigned int height;
+    AVLNode() : data(), left(), right(), height() {}
+    AVLNode(T val) : data(val), left(), right(), height() {}
+  };
+
+
+
+template <typename T>
+AVLTRree<T>::AVLTree() : root(), count() {}
+
+template <typename T>
+AVLTRree<T>::~AVLTree() = default;
+
+template <typename T>
 bool AVLTree<T>::insert(T val) {
   if (insert(val, root)) return true;
   return false;
