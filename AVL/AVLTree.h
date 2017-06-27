@@ -10,10 +10,10 @@ class AVLTree {
  private:
   struct AVLNode;
 
-  size_t count;
-
   std::shared_ptr<AVLNode> root;
 
+  size_t count;
+  
   unsigned int getHeight(std::shared_ptr<AVLNode>& p) const {
     if (p) return p->height;
     return 0;
