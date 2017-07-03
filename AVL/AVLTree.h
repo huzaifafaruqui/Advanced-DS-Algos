@@ -29,8 +29,8 @@ class AVLTree {
 
   void adjustBalanceFactors(std::shared_ptr<AVLNode>&,
                             std::shared_ptr<AVLNode>&);
-  void rotateLeft(std::shared_ptr<AVLNode>&);
-  void rotateRight(std::shared_ptr<AVLNode>&);
+  std::shared_ptr<AVLNode> rotateLeft(std::shared_ptr<AVLNode>&);
+  std::shared_ptr<AVLNode> rotateRight(std::shared_ptr<AVLNode>&);
   void adjustLeftRight(std::shared_ptr<AVLNode>&, std::shared_ptr<AVLNode>&);
   void adjustRightLeft(std::shared_ptr<AVLNode>&, std::shared_ptr<AVLNode>&);
   void printInorder(std::ostream&, std::shared_ptr<AVLNode>) const;

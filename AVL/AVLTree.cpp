@@ -1,12 +1,11 @@
 
 template <typename T>
 struct AVLTree<T>::AVLNode {
-  T data;
-  std::shared_ptr<AVLNode> left;
-  std::shared_ptr<AVLNode> right;
-  unsigned int height;
-  AVLNode() : data(), left(), right(), height() {}
-  AVLNode(T val) : data(val), left(), right(), height() {}
+  T data {}; // https://stackoverflow.com/questions/2143022/how-to-correctly-initialize-variable-of-template-type
+  std::shared_ptr<AVLNode> left = nullptr; // default member initializer
+  std::shared_ptr<AVLNode> right = nullptr;
+  unsigned int height = 0;
+  AVLNode(T val) : data(val) {}
 };
 
 template <typename T>
@@ -39,6 +38,28 @@ std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::insert(
   }
 
   return p;
+}
+
+template <typename T>
+std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::rotateLeft(
+  std::shared_ptr<AVLNode>& p){
+  auto temp = p->right;
+
+  p->right = temp->left;
+  temp->left = p;
+
+  return temp;
+}
+
+template <typename T>
+std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::rotateRight(
+  std::shared_ptr<AVLNode>& p){
+  auto temp = p->left;
+
+  p->left = temp->right;
+  temp->right = p;
+
+  return temp;
 }
 
 template <typename T>
