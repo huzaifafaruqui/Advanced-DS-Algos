@@ -10,11 +10,9 @@ class AVLTree {
  private:
   struct AVLNode;
 
-  std::shared_ptr<AVLNode> root;
+  std::shared_ptr<AVLNode> root = nullptr;
 
-  size_t count;
-  
-  unsigned int getHeight(std::shared_ptr<AVLNode>& p) const {
+  unsigned getHeight(std::shared_ptr<AVLNode>& p) const {
     if (p) return p->height;
     return 0;
   }
@@ -27,27 +25,23 @@ class AVLTree {
 
   std::shared_ptr<AVLNode> extract_min(std::shared_ptr<AVLNode>&);
 
-  void adjustBalanceFactors(std::shared_ptr<AVLNode>&,
-                            std::shared_ptr<AVLNode>&);
+  void adjustBalanceFactors(std::shared_ptr<AVLNode>&, const T& val);
   std::shared_ptr<AVLNode> rotateLeft(std::shared_ptr<AVLNode>&);
   std::shared_ptr<AVLNode> rotateRight(std::shared_ptr<AVLNode>&);
-  void adjustLeftRight(std::shared_ptr<AVLNode>&, std::shared_ptr<AVLNode>&);
-  void adjustRightLeft(std::shared_ptr<AVLNode>&, std::shared_ptr<AVLNode>&);
   void printInorder(std::ostream&, std::shared_ptr<AVLNode>) const;
 
  public:
-  AVLTree();
-  ~AVLTree();
+  ~AVLTree() = default;
 
-  //disable copy&move constructor/assignmenet
+  // disable copy&move constructor/assignmenet
   AVLTree(AVLTree&&) = delete;
   AVLTree& operator=(AVLTree&&) = delete;
-  AVLTree(const AVLTree&) = delete;  
-  AVLTree& operator=(const AVLTree&) = delete;  
-  
+  AVLTree(const AVLTree&) = delete;
+  AVLTree& operator=(const AVLTree&) = delete;
+
   bool insert(const T&);
   bool remove(const T&);
-  unsigned int getHeight() const { return getHeight(root); }
+  unsigned getHeight() const { return getHeight(root); }
   bool search(const T&);
   size_t size() const { return count; }
   // void restoreAVL(AVLTreeNode *ancestor, AVLTreeNode *newNode);

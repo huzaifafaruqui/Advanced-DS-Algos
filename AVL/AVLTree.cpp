@@ -1,19 +1,12 @@
 
 template <typename T>
 struct AVLTree<T>::AVLNode {
-  T data {}; // https://stackoverflow.com/questions/2143022/how-to-correctly-initialize-variable-of-template-type
-  std::shared_ptr<AVLNode> left = nullptr; // default member initializer
+  T data{};                                 // https://stackoverflow.com/questions/2143022/how-to-correctly-initialize-variable-of-template-type
+  std::shared_ptr<AVLNode> left = nullptr;  // default member initializer
   std::shared_ptr<AVLNode> right = nullptr;
-  unsigned int height = 0;
+  unsigned height = 0;
   AVLNode(T val) : data(val) {}
 };
-
-template <typename T>
-AVLTree<T>::AVLTree()
-    : root(), count() {}
-
-template <typename T>
-AVLTree<T>::~AVLTree() = default;
 
 template <typename T>
 bool AVLTree<T>::insert(const T& val) {
@@ -37,12 +30,46 @@ std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::insert(
     p->right = insert(val, p->right);
   }
 
+  else {
+    return p;
+  }
+
+  p->height = std::max(getHeight(p->left, p->right)) + 1;
+
+  adjustBalanceFactor(p, val);
+
   return p;
 }
 
 template <typename T>
+void AVLTree<T>::adjustBalanceFactor(std::shared_ptr<AVLNode>& p,
+                                     const T& val) {
+  int balance = getHeight(p->right) - getHeight(p->left);
+
+  if (abs(balance) <= 1) return;
+
+  // Left Left Case
+  if (balance < -1 && val < p->left->data) return rightRotate(p);
+
+  // Right Right Case
+  if (balance > 1 && val > p->right->data) return leftRotate(p);
+
+  // Left Right Case
+  if (balance < -1 && val > p->left->data) {
+    p->left = leftRotate(p->left);
+    return rightRotate(p);
+  }
+
+  // Right Left Case
+  if (balance > 1 && val < p->right->data) {
+    p->right = rightRotate(p->right);
+    return leftRotate(p);
+  }
+}
+
+template <typename T>
 std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::rotateLeft(
-  std::shared_ptr<AVLNode>& p){
+    std::shared_ptr<AVLNode>& p) {
   auto temp = p->right;
 
   p->right = temp->left;
@@ -53,7 +80,7 @@ std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::rotateLeft(
 
 template <typename T>
 std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::rotateRight(
-  std::shared_ptr<AVLNode>& p){
+    std::shared_ptr<AVLNode>& p) {
   auto temp = p->left;
 
   p->left = temp->right;
@@ -85,7 +112,7 @@ std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::search(
 template <typename T>
 std::shared_ptr<typename AVLTree<T>::AVLNode> AVLTree<T>::extract_min(
     std::shared_ptr<AVLNode>& p) {
-  if (p->left){
+  if (p->left) {
     // make sure p!=nullptr
     return extract_min(p->left);
   }
