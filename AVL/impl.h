@@ -1,5 +1,14 @@
 
 template <typename T>
+struct AVLTree<T>::AVLNode {
+	T data{};                                 // https://stackoverflow.com/questions/2143022/how-to-correctly-initialize-variable-of-template-type
+	std::shared_ptr<AVLNode> left = nullptr;  // default member initializer
+	std::shared_ptr<AVLNode> right = nullptr;
+	unsigned height = 0;
+	AVLNode(T val) : data(val) {}
+};
+
+template <typename T>
 bool AVLTree<T>::insert(const T& val) {
 	if (insert(val, root)) return true;
 	return false;
