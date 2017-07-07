@@ -8,7 +8,13 @@
 template <typename T>
 class AVLTree {
  private:
-  struct AVLNode;
+	 struct AVLNode {
+		 T data{};                                 // https://stackoverflow.com/questions/2143022/how-to-correctly-initialize-variable-of-template-type
+		 std::shared_ptr<AVLNode> left = nullptr;  // default member initializer
+		 std::shared_ptr<AVLNode> right = nullptr;
+		 unsigned height = 0;
+		 AVLNode(T val) : data(val) {}
+  };
 
   std::shared_ptr<AVLNode> root = nullptr;
 
@@ -25,12 +31,13 @@ class AVLTree {
 
   std::shared_ptr<AVLNode> extract_min(std::shared_ptr<AVLNode>&);
 
-  void adjustBalanceFactors(std::shared_ptr<AVLNode>&, const T& val);
+  void adjustBalanceFactor(std::shared_ptr<AVLNode>&, const T& val);
   std::shared_ptr<AVLNode> rotateLeft(std::shared_ptr<AVLNode>&);
   std::shared_ptr<AVLNode> rotateRight(std::shared_ptr<AVLNode>&);
   void printInorder(std::ostream&, std::shared_ptr<AVLNode>) const;
 
  public:
+  AVLTree() = default;
   ~AVLTree() = default;
 
   // disable copy&move constructor/assignmenet
@@ -50,6 +57,6 @@ class AVLTree {
   friend std::ostream& operator<<(std::ostream&, const AVLTree<U>&);
 };
 
-#include "AVLTree.cpp"
+#include "impl.h"
 
 #endif  // AVLTREE_H
