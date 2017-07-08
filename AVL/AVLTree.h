@@ -17,6 +17,17 @@ private:
 		return 0;
 	}
 
+	unsigned getHeight(std::shared_ptr<AVLNode>& p, std::shared_ptr<AVLNode>& q) const {
+
+		unsigned pHeight = getHeight(p);
+		unsigned qHeight = getHeight(q);
+
+		if (pHeight > qHeight)
+			return pHeight;
+		else
+			return qHeight;
+	}
+
 	std::shared_ptr<AVLNode> insert(const T&, std::shared_ptr<AVLNode>&);
 	// https://stackoverflow.com/questions/10643563/how-to-return-smart-pointers-shared-ptr-by-reference-or-by-value
 	bool remove(std::shared_ptr<AVLNode>&, const T&);

@@ -34,11 +34,8 @@ std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::insert(
 		return p;
 	}
 
-	int hLeft = getHeight(p->left), hRight = getHeight(p->right);
-	if (hLeft > hRight)
-		p->height = hLeft + 1;
-	else
-		p->height = hRight + 1;
+
+	p->height = getHeight(p->left, p->right) + 1;
 
 	adjustBalanceFactor(p, val);
 
@@ -53,29 +50,25 @@ void AVLTree<T>::adjustBalanceFactor(std::shared_ptr<AVLNode>& p,
 	if (abs(balance) <= 1) return;
 
 	// Left Left Case
-	if (balance < -1 && val < p->left->data) {
-		rotateRight(p);
-		return;
+	else if (balance < -1 && val < p->left->data) {
+		p = rotateRight(p);
 	}
 
 	// Right Right Case
-	if (balance > 1 && val > p->right->data) {
-		rotateLeft(p);
-		return;
+	else if (balance > 1 && val > p->right->data) {
+		p = rotateLeft(p);
 	}
 
 	// Left Right Case
-	if (balance < -1 && val > p->left->data) {
+	else if (balance < -1 && val > p->left->data) {
 		p->left = rotateLeft(p->left);
-		rotateRight(p);
-		return;
+		p = rotateRight(p);
 	}
 
 	// Right Left Case
-	if (balance > 1 && val < p->right->data) {
+	else if (balance > 1 && val < p->right->data) {
 		p->right = rotateRight(p->right);
-		rotateLeft(p);
-		return;
+		p = rotateLeft(p);
 	}
 }
 
@@ -87,6 +80,9 @@ std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::rotateLeft(
 	p->right = temp->left;
 	temp->left = p;
 
+	p->height = getHeight(p->left, p->right);
+	temp->height = getHeight(temp->left, temp->right);
+
 	return temp;
 }
 
@@ -97,6 +93,9 @@ std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::rotateRight(
 
 	p->left = temp->right;
 	temp->right = p;
+
+	p->height = getHeight(p->left, p->right);
+	temp->height = getHeight(temp->left, temp->right);
 
 	return temp;
 }
