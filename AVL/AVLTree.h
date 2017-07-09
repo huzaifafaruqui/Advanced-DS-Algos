@@ -36,7 +36,6 @@ public:
 
     bool insert(const T&);
     bool remove(const T&);
-    unsigned getHeight() const { return getHeight(root); }
     bool search(const T&);
     T& getMin() {
         if (root)

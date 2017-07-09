@@ -1,5 +1,3 @@
-#include "AVLTree.h"
-
 template <typename T>
 struct AVLTree<T>::AVLNode {
     T data{};                                 // https://stackoverflow.com/questions/2143022/how-to-correctly-initialize-variable-of-template-type
@@ -202,8 +200,7 @@ void AVLTree<T>::printInorder(
 }
 
 template <typename U>
-std::ostream& operator<<(std::ostream& out, const AVLTree<U>& A)  // TODO
-{
+std::ostream& operator<<(std::ostream& out, const AVLTree<U>& A) {
     A.printInorder(out, A.root);
     return out;
 }
