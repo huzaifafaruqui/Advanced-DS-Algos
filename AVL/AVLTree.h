@@ -1,7 +1,6 @@
 // file AVLTree.h:
 #ifndef AVL_H
 #define AVL_H
-// https://en.wikipedia.org/wiki/Include_guard
 
 #include <memory>
 
@@ -33,9 +32,7 @@ private:
 	bool remove(std::shared_ptr<AVLNode>&, const T&);
 	// shared pointers are heavy objects that should be passed by reference
 	std::shared_ptr<AVLNode> search(const T&, std::shared_ptr<AVLNode>&);
-
-	std::shared_ptr<AVLNode> extract_min(std::shared_ptr<AVLNode>&);
-
+	T& getMin(std::shared_ptr<AVLNode>&);
 	void adjustBalanceFactor(std::shared_ptr<AVLNode>&, const T& val);
 	std::shared_ptr<AVLNode> rotateLeft(std::shared_ptr<AVLNode>&);
 	std::shared_ptr<AVLNode> rotateRight(std::shared_ptr<AVLNode>&);
@@ -55,6 +52,12 @@ public:
 	bool remove(const T&);
 	unsigned getHeight() const { return getHeight(root); }
 	bool search(const T&);
+	T& getMin() {
+		if (root)
+			return getMin(root);
+		else
+			return 0;
+	}
 
 	template <class U>
 	friend std::ostream& operator<<(std::ostream&, const AVLTree<U>&);

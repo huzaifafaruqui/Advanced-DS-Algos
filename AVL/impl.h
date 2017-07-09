@@ -1,3 +1,4 @@
+#include "AVLTree.h"
 
 template <typename T>
 struct AVLTree<T>::AVLNode {
@@ -9,7 +10,7 @@ struct AVLTree<T>::AVLNode {
 };
 
 template <typename T>
-bool AVLTree<T>::insert(const T& val) {
+inline bool AVLTree<T>::insert(const T& val) {
 	if (insert(val, root)) return true;
 	return false;
 }
@@ -17,7 +18,6 @@ bool AVLTree<T>::insert(const T& val) {
 template <typename T>
 std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::insert(
 	const T& val, std::shared_ptr<AVLNode>& p) {
-	// https://stackoverflow.com/questions/30287402/c-nested-class-in-class-template-declaration
 	if (p == nullptr) {
 		p = std::make_shared<AVLNode>(val);
 	}
@@ -101,7 +101,7 @@ std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::rotateRight(
 }
 
 template <typename T>
-bool AVLTree<T>::search(const T& val) {
+inline bool AVLTree<T>::search(const T& val) {
 	if (search(val, root)) return true;
 	return false;
 }
@@ -120,19 +120,19 @@ std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::search(
 	return search(val, p->right);
 }
 
-template <typename T>
-std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::extract_min(
-	std::shared_ptr<AVLNode>& p) {
+template<typename T>
+inline T & AVLTree<T>::getMin(std::shared_ptr<AVLNode>&)
+{
 	if (p->left) {
 		// make sure p!=nullptr
-		return extract_min(p->left);
+		return getMin(p->left);
 	}
 
-	return p;
+	return p->data;
 }
 
 template <typename T>
-bool AVLTree<T>::remove(const T& val) {
+inline bool AVLTree<T>::remove(const T& val) {
 	// auto temp = search(val, root);
 	return remove(root, val);
 }
@@ -180,8 +180,8 @@ void AVLTree<T>::printInorder(
 	}
 }
 
-template <typename T>
-std::ostream& operator<<(std::ostream& out, const AVLTree<T>& A)  // TODO
+template <typename U>
+std::ostream& operator<<(std::ostream& out, const AVLTree<U>& A)  // TODO
 {
 	A.printInorder(out, A.root);
 	return out;
