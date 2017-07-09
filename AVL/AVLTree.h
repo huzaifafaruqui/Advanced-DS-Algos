@@ -55,8 +55,6 @@ public:
 	bool remove(const T&);
 	unsigned getHeight() const { return getHeight(root); }
 	bool search(const T&);
-	size_t size() const { return count; }
-	// void restoreAVL(AVLTreeNode *ancestor, AVLTreeNode *newNode);
 
 	template <class U>
 	friend std::ostream& operator<<(std::ostream&, const AVLTree<U>&);

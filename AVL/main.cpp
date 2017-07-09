@@ -23,7 +23,7 @@ int main()
 			break;
 		case 3:
 			std::cin >> x;
-			std::cout << T1.remove(x) << std::endl;
+			T1.remove(x);
 			std::cout << T1;
 			break;
 

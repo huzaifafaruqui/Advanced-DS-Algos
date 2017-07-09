@@ -139,12 +139,13 @@ bool AVLTree<T>::remove(const T& val) {
 
 template <typename T>
 bool AVLTree<T>::remove(std::shared_ptr<AVLNode>& p, const T& val) {
+	bool flag = false;
 	if (p && p->data > val) {
-		return remove(p->left, val);
+		flag = remove(p->left, val);
 	}
 
 	else if (p && p->data < val) {
-		return remove(p->right, val);
+		flag = remove(p->right, val);
 	}
 
 	else if (p && p->data == val) {
@@ -158,9 +159,15 @@ bool AVLTree<T>::remove(std::shared_ptr<AVLNode>& p, const T& val) {
 			p->data = temp->data;
 			remove(p->right, p->data);
 		}
-		return true;
+		flag = true;
 	}
-	return false;
+
+	if (flag && p) {
+		p->height = getHeight(p->left, p->right) + 1;
+		adjustBalanceFactor(p, val);
+	}
+
+	return flag;
 }
 
 template <typename T>
