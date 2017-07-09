@@ -1,3 +1,4 @@
+#include "AVLTree.h"
 
 template <typename T>
 struct AVLTree<T>::AVLNode {
@@ -12,6 +13,23 @@ template <typename T>
 inline bool AVLTree<T>::insert(const T& val) {
     if (insert(val, root)) return true;
     return false;
+}
+
+template<typename T>
+inline void AVLTree<T>::updateHeight(std::shared_ptr<AVLNode>& p) {
+
+    unsigned lHeight = 0, rHeight = 0;
+
+    if (p->left)
+        lHeight = p->left->height;
+
+    if (p->right)
+        rHeight = p->right->height;
+
+    if (lHeight >= rHeight)
+        p->height = lHeight + 1;
+    else
+        p->height = rHeight + 1;
 }
 
 template <typename T>
@@ -33,8 +51,7 @@ std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::insert(
         return p;
     }
 
-
-    p->height = getHeight(p->left, p->right) + 1;
+    updateHeight(p);
 
     adjustBalanceFactor(p, val);
 
@@ -44,7 +61,13 @@ std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::insert(
 template <typename T>
 void AVLTree<T>::adjustBalanceFactor(std::shared_ptr<AVLNode>& p,
     const T& val) {
-    int balance = getHeight(p->right) - getHeight(p->left);
+    int balance = 0;
+
+    if (p->right)
+        balance = p->right->height;
+
+    if (p->left)
+        balance -= p->left->height;
 
     if (abs(balance) <= 1) return;
 
@@ -79,8 +102,8 @@ std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::rotateLeft(
     p->right = temp->left;
     temp->left = p;
 
-    p->height = getHeight(p->left, p->right);
-    temp->height = getHeight(temp->left, temp->right);
+    updateHeight(p);
+    updateHeight(temp);
 
     return temp;
 }
@@ -93,8 +116,8 @@ std::shared_ptr<typename AVLTree<T>::template AVLNode> AVLTree<T>::rotateRight(
     p->left = temp->right;
     temp->right = p;
 
-    p->height = getHeight(p->left, p->right);
-    temp->height = getHeight(temp->left, temp->right);
+    updateHeight(p);
+    updateHeight(temp);
 
     return temp;
 }
@@ -161,7 +184,7 @@ bool AVLTree<T>::remove(std::shared_ptr<AVLNode>& p, const T& val) {
     }
 
     if (flag && p) {
-        p->height = getHeight(p->left, p->right) + 1;
+        updateHeight(p);
         adjustBalanceFactor(p, val);
     }
 
