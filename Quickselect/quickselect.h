@@ -8,9 +8,6 @@
 #ifndef QUICKSELECT_H
 #define QUICKSELECT_H
 
-#include <algorithm>
-#include <functional>  // std::less
-
 namespace adsa {
 
 	template <typename Iter, typename Comp>
