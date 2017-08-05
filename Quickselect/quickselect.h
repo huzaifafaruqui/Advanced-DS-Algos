@@ -1,8 +1,8 @@
 // Copyright (c) 2014-2018. Mohd Huzaifa Faruqui
 // Quickselect - find nth largest/ smallest number in an unsorted array
 // Complexity - Worst case O(n^2)
-//				Best case O(n)
-//				Average case O(n)
+//		Best case O(n)
+//		Average case O(n)
 
 
 #ifndef QUICKSELECT_H
